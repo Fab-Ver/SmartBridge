@@ -3,7 +3,7 @@
 
 class Sonar {
     public:
-        float getDistance();
+        virtual float getDistance() = 0;
 };
 
 #endif
