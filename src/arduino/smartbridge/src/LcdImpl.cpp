@@ -28,4 +28,5 @@ void LcdImpl::writeAlarm(String msg, int waterLevel, int angle){
     lcd.setCursor(1,0);
     lcd.print("Water Lev:" + (String) waterLevel);
     lcd.setCursor(2,0);
+    lcd.print("Valve's angle:" + (String) angle);
 };
