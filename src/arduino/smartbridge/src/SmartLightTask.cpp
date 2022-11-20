@@ -1,5 +1,8 @@
 #include "SmartLightTask.h"
-//#include <Arduino.h>
+#include <Arduino.h>
+
+#define TH 100
+#define TIME_OFF 5000
 
 SmartLightTask::SmartLightTask(int ledPin, int lsPin, int msPin){
     this->ledPin = ledPin;
@@ -17,10 +20,21 @@ void SmartLightTask::init(int period){
 }
 
 void SmartLightTask::tick(){
+  int start;
+  ms->updateStatus();
   switch (state){
   case OFF:
+    if(ms->getStatus() && ls->getIntensity() < TH){
+      led->switchOn();
+      start = millis();
+      state = ON;
+    }
     break;
   case ON:
+    if((ms->getStatus() && millis() - start >= TIME_OFF) || ls->getIntensity() > TH){
+      led->switchOff();
+      state = OFF;
+    }
     break;
   }
 };
