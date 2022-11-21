@@ -52,7 +52,7 @@ void WaterLevelTask::tick(){
             lcdMonitor->on();
             lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
         } else {
-            blinktask->setState(FSM_OFF);
+            blinktask->setState(BLINK_OFF);
         }
         break;
     case ALARM:
@@ -60,7 +60,7 @@ void WaterLevelTask::tick(){
         if(switchAndCheckState(currWL)){
             greenLed->switchOff();
             redLed->switchOn();
-            slTask->setActive(false); //Riguardare questa linea di codice
+            slTask->setState(FSM_OFF);
             lcdMonitor->on();
             valve->on();
             valve->setPosition(angle);
