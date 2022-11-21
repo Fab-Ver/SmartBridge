@@ -6,8 +6,7 @@
 class MotionSensorImpl : public MotionSensor{
     public:
         MotionSensorImpl(int pin);
-        void updateStatus();
-        bool getStatus();
+        bool updateStatus();
     private:
         bool detectedStatus;
         int pin;

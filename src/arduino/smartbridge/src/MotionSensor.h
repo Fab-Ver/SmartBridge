@@ -3,8 +3,7 @@
 
 class MotionSensor{
     public:
-        virtual void updateStatus() = 0;
-        virtual bool getStatus() = 0;
+        virtual bool updateStatus() = 0;
 };
 
 #endif

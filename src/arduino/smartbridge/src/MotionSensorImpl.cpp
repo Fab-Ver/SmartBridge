@@ -16,13 +16,10 @@ MotionSensorImpl::MotionSensorImpl(int pin){
     delay(50);
 }
 
-void MotionSensorImpl::updateStatus(){
+bool MotionSensorImpl::updateStatus(){
     int current = digitalRead(pin);
     if(current != detectedStatus){
         detectedStatus = current;
     }
-}
-
-bool MotionSensorImpl::getStatus(){
     return detectedStatus;
 }
