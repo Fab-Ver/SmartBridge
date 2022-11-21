@@ -1,3 +1,5 @@
+#ifndef __CONFIG__
+#define __CONFIG__
 
 #define LA_PIN 0 
 #define LB_PIN 0
@@ -8,5 +10,8 @@
 #define TRIG_PIN 0
 #define ECHO_PIN 0
 #define SERVO_PIN 0
+#define BUTTON_PIN 0
 
 typedef enum State { LIGHT_ON, LIGHT_OFF, FSM_OFF} State;
+
+#endif
