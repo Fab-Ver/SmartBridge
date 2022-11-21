@@ -21,15 +21,16 @@ class WaterLevelTask : public Task {
         ServoMotor* valve;
         Potentiometer* pot;
         Lcd* lcdMonitor;
-        SmartLightTask* slTask;
-        BlinkTask* blinktask;
+        Task* slTask;
+        Task* blinktask;
         WLState currState;
         int getPeriod();
         bool switchAndCheckState(float currWL);
     public:
-        WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, SmartLightTask* slt, BlinkTask* bt);
+        WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, Task* slt, Task* bt);
         void init(int normalPeriod, int preAlarmPeriod, int alarmPeriod);
         void tick();
+        void setState(State state);
 };
 
 

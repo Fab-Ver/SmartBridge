@@ -7,7 +7,7 @@
 
 int periods[3];
 
-WaterLevelTask::WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, SmartLightTask* slt, BlinkTask* bt){
+WaterLevelTask::WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, Task* slt, Task* bt){
     this->trigPin = trigPin;
     this->echoPin = echoPin;
     this->valvePin = valvePin;
@@ -36,7 +36,7 @@ void WaterLevelTask::init(int normalPeriod, int preAlarmPeriod, int alarmPeriod)
 
 void WaterLevelTask::tick(){
     float currWL = wlSensor->getDistance();
-    switch (currState){
+    switch(currState){
     case NORMAL:
         if(switchAndCheckState(currWL)){
             lcdMonitor->off();
@@ -52,7 +52,7 @@ void WaterLevelTask::tick(){
             lcdMonitor->on();
             lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
         } else {
-            blinktask->setState(BLINK_OFF);
+            blinktask->setState(FSM_OFF);
         }
         break;
     case ALARM:
@@ -93,4 +93,6 @@ bool WaterLevelTask::switchAndCheckState(float currWL){
     Task::setPeriod(getPeriod());
     interrupts();
     return prevState == currState;
-};
+}
+
+void setState(State state){};
