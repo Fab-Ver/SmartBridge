@@ -6,7 +6,7 @@
 #include "LightSensorImpl.h"
 #include "MotionSensorImpl.h"
 
-typedef enum SLState {ON, OFF} SLSate;
+typedef enum SLState {LIGHT_ON, LIGHT_OFF, FSM_OFF} SLSate;
 
 class SmartLightTask : public Task{
     private:
@@ -19,5 +19,6 @@ class SmartLightTask : public Task{
         SmartLightTask(int ledPin, int lsPin, int msPin);
         void init(int period);
         void tick();
+        void setState(SLState state);
 };
 #endif
