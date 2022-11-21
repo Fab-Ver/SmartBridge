@@ -2,7 +2,8 @@
 #define __POTENTIOMETER__
 
 class Potentiometer {
-    virtual int getAngle() = 0;
+    public:
+        virtual int getAngle() = 0;
 };
 
 #endif
