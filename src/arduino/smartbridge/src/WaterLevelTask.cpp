@@ -1,4 +1,5 @@
 #include "WaterLevelTask.h"
+#include "msg/MsgService.h"
 #include <Arduino.h>
 
 #define WL1 3
@@ -36,6 +37,19 @@ void WaterLevelTask::init(int normalPeriod, int preAlarmPeriod, int alarmPeriod)
 }
 
 void WaterLevelTask::tick(){
+    if(MsgService.isMsgAvailable()){
+        Msg* msg = MsgService.receiveMsg();
+        if(msg->getContent() == "MANUAL_ON"){
+            noInterrupts();
+            currState = MANUAL;
+            interrupts();
+        } else if (msg->getContent() == "MANUAL_OFF"){
+            noInterrupts();
+            currState = ALARM;
+            interrupts();
+        }
+        delete msg;
+    }
     float currWL = wlSensor->getDistance();
     switch(currState){
     case NORMAL:
@@ -43,6 +57,7 @@ void WaterLevelTask::tick(){
             lcdMonitor->off();
             greenLed->switchOn();
             redLed->switchOff();
+            MsgService.sendMsg("NORMAL");
         } else {
             greenLed->switchOff();
         }
@@ -52,6 +67,7 @@ void WaterLevelTask::tick(){
             blinktask->setActive(true);
             lcdMonitor->on();
             lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
+            MsgService.sendMsg("PRE-ALARM");
         } else {
             blinktask->updateState();
         }
@@ -66,6 +82,7 @@ void WaterLevelTask::tick(){
             valve->on();
             valve->setPosition(angle);
             lcdMonitor->writeAlarm("ALARM",currWL,angle);
+            MsgService.sendMsg("ALARM");
         } else {
             slTask->setActive(true);
             redLed->switchOff();
@@ -81,6 +98,7 @@ void WaterLevelTask::tick(){
         valve->on();
         valve->setPosition(anglePot);
         lcdMonitor->writeAlarm("ALARM",currWL,anglePot);
+        MsgService.sendMsg("MANUAL ALARM");
         break;
     }
 }
@@ -114,4 +132,4 @@ void WaterLevelTask::updateState(){
         }
     }
     last_interrupt_time = interrupt_time;
-};
+}

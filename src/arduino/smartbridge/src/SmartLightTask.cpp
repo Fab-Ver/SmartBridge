@@ -1,5 +1,6 @@
 #include "SmartLightTask.h"
 #include <Arduino.h>
+#include "msg/MsgService.h"
 
 #define TH 100
 #define TIME_OFF 5000
@@ -27,6 +28,7 @@ void SmartLightTask::tick(){
   case LIGHT_OFF:
     if(detected && lightIntensity < TH){
       led->switchOn();
+      MsgService.sendMsg("LED ON");
       start = millis();
       currState = LIGHT_ON;
     }
@@ -34,11 +36,13 @@ void SmartLightTask::tick(){
   case LIGHT_ON:
     if((detected && millis() - start >= TIME_OFF) || lightIntensity > TH){
       led->switchOff();
+      MsgService.sendMsg("LED OFF");
       currState = LIGHT_OFF;
     }
     break;
   case FSM_OFF:
     led->switchOff();
+    MsgService.sendMsg("SYSTEM AND LED OFF");
     Task::setActive(false);
     currState = LIGHT_OFF;
   }
