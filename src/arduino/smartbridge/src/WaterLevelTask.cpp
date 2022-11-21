@@ -9,14 +9,13 @@
 int periods[3];
 unsigned long last_interrupt_time = 0;
 
-WaterLevelTask::WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, Task* slt, Task* bt){
+WaterLevelTask::WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, Task* slt, Task* bt){
     this->trigPin = trigPin;
     this->echoPin = echoPin;
     this->valvePin = valvePin;
     this->potPin = potPin;
     this->greenPin = greenPin;
     this->redPin = redPin;
-    this->buttonPin = buttonPin;
     this->slTask = slt;
     this->blinktask = bt;
 }

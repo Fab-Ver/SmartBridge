@@ -14,7 +14,7 @@ typedef enum WLState {NORMAL, PRE_ALARM, ALARM, MANUAL} WLState;
 
 class WaterLevelTask : public Task {
     private:
-        int trigPin, echoPin, valvePin, potPin, greenPin, redPin, buttonPin;
+        int trigPin, echoPin, valvePin, potPin, greenPin, redPin;
         Light* greenLed;
         Light* redLed;
         Sonar* wlSensor;
@@ -27,7 +27,7 @@ class WaterLevelTask : public Task {
         int getPeriod();
         bool switchAndCheckState(float currWL);
     public:
-        WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, Task* slt, Task* bt);
+        WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin,Task* slt, Task* bt);
         void init(int normalPeriod, int preAlarmPeriod, int alarmPeriod);
         void tick();
         void updateState();
