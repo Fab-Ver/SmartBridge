@@ -38,22 +38,38 @@ void WaterLevelTask::tick(){
     float currWL = wlSensor->getDistance();
     switch (currState){
     case NORMAL:
-        greenLed->switchOn();
-        redLed->switchOff();
-        if(currWL >= WL1 && currWL < WL2){
-            noInterrupts();
-            currState = PRE_ALARM;
-            interrupts();
-        } else if (currWL >= WL2 && currWL <= WL_MAX){
-            noInterrupts();
-            currState = ALARM;
-            interrupts();
+        if(switchAndCheckState(currWL)){
+            lcdMonitor->off();
+            greenLed->switchOn();
+            redLed->switchOff();
+        } else {
+            greenLed->switchOff();
         }
         break;
     case PRE_ALARM:
-        
+        if(switchAndCheckState(currWL)){
+            blinktask->setActive(true);
+            lcdMonitor->on();
+            lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
+        } else {
+            blinktask->setState(FSM_OFF);
+        }
         break;
     case ALARM:
+        int angle = map(currWL,WL2,WL_MAX,0,180);
+        if(switchAndCheckState(currWL)){
+            greenLed->switchOff();
+            redLed->switchOn();
+            slTask->setActive(false); //Riguardare questa linea di codice
+            lcdMonitor->on();
+            valve->on();
+            valve->setPosition(angle);
+            lcdMonitor->writeAlarm("ALARM",currWL,angle);
+        } else {
+            slTask->setActive(true);
+            redLed->switchOff();
+            valve->off();
+        }
         break;
     case MANUAL:
         break;
@@ -63,3 +79,18 @@ void WaterLevelTask::tick(){
 int WaterLevelTask::getPeriod(){
     return periods[currState];
 }
+
+bool WaterLevelTask::switchAndCheckState(float currWL){
+    noInterrupts();
+    WLState prevState = currState;
+    if(currWL < WL1){
+        currState = NORMAL;
+    } else if (currWL >= WL1 && currWL < WL2){
+        currState = PRE_ALARM;
+    } else if (currWL >= WL2 && currWL <= WL_MAX){
+        currState = ALARM;
+    }
+    Task::setPeriod(getPeriod());
+    interrupts();
+    return prevState == currState;
+};
