@@ -13,7 +13,7 @@ class BlinkTask: public Task {
         BlinkTask(int pin);  
         void init(int period);  
         void tick();
-        void setState(State state);
+        void updateState();
 };
 
 

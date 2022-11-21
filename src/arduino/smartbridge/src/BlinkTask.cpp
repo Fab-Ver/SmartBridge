@@ -1,6 +1,5 @@
 #include "BlinkTask.h"
 #include <Arduino.h>
-#include "config.h"
 
 BlinkTask::BlinkTask(int pin){
     this->pin = pin;
@@ -30,8 +29,8 @@ void BlinkTask::tick(){
   }
 }
 
-void BlinkTask::setState(State state){
+void BlinkTask::updateState(){
     noInterrupts();
-    this->currState = state;
+    this->currState = FSM_OFF;
     interrupts();
 }

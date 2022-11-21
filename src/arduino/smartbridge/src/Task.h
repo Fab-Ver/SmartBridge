@@ -39,7 +39,7 @@ public:
     this->period = period;
   }
 
-  virtual void setState(State state) = 0;
+  virtual void updateState() = 0;
   
 };
 

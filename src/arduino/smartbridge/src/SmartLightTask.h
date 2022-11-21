@@ -17,6 +17,6 @@ class SmartLightTask : public Task{
         SmartLightTask(int ledPin, int lsPin, int msPin);
         void init(int period);
         void tick();
-        void setState(State state);
+        void updateState();
 };
 #endif
