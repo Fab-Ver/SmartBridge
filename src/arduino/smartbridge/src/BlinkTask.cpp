@@ -21,7 +21,7 @@ void BlinkTask::tick(){
       led->switchOff();
       currState = LIGHT_OFF;
       break;
-    case FSM_OFF:
+    case BLINK_OFF:
         led->switchOff();
         Task::setActive(false);
         currState = LIGHT_OFF;
@@ -30,5 +30,7 @@ void BlinkTask::tick(){
 }
 
 void BlinkTask::setState(BTState state){
+    noInterrupts();
     this->currState = state;
+    interrupts();
 }

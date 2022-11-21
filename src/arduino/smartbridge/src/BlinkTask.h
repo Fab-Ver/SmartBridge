@@ -4,7 +4,7 @@
 #include "Task.h"
 #include "Led.h"
 
-typedef enum BTState { LIGHT_ON, LIGHT_OFF, FSM_OFF} BTState;
+typedef enum BTState { LIGHT_ON, LIGHT_OFF, BLINK_OFF} BTState;
 
 class BlinkTask: public Task {
     private:
