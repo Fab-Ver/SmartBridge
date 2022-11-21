@@ -32,6 +32,10 @@ public:
   void setActive(bool active){
     this->active = active;
   }
+
+  void setPeriod(int period){
+    this->period = period;
+  }
   
 };
 
