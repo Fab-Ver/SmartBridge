@@ -3,6 +3,7 @@
 #include "WaterLevelTask.h"
 #include "Scheduler.h"
 #include "config.h"
+#include "msg/MsgService.h"
 #include <EnableInterrupt.h>
 #include <Arduino.h>
 
@@ -15,6 +16,8 @@ void buttonHandler(){
 }
 
 void setup() {
+  MsgService.init();
+  
   sched.init(0);
 
   Task* bt = new BlinkTask(LC_PIN);
