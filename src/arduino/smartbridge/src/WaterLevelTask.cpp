@@ -4,8 +4,10 @@
 #define WL1 3
 #define WL2 5
 #define WL_MAX 7
+#define DEBOUNCE_DELAY 100
 
 int periods[3];
+unsigned long last_interrupt_time = 0;
 
 WaterLevelTask::WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, Task* slt, Task* bt){
     this->trigPin = trigPin;
@@ -52,7 +54,7 @@ void WaterLevelTask::tick(){
             lcdMonitor->on();
             lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
         } else {
-            blinktask->setState(FSM_OFF);
+            blinktask->updateState();
         }
         break;
     case ALARM:
@@ -60,7 +62,7 @@ void WaterLevelTask::tick(){
         if(switchAndCheckState(currWL)){
             greenLed->switchOff();
             redLed->switchOn();
-            slTask->setState(FSM_OFF);
+            slTask->updateState();
             lcdMonitor->on();
             valve->on();
             valve->setPosition(angle);
@@ -72,6 +74,14 @@ void WaterLevelTask::tick(){
         }
         break;
     case MANUAL:
+        int anglePot = pot->getAngle();
+        greenLed->switchOff();
+        redLed->switchOn();
+        slTask->updateState();
+        lcdMonitor->on();
+        valve->on();
+        valve->setPosition(anglePot);
+        lcdMonitor->writeAlarm("ALARM",currWL,anglePot);
         break;
     }
 }
@@ -95,4 +105,14 @@ bool WaterLevelTask::switchAndCheckState(float currWL){
     return prevState == currState;
 }
 
-void setState(State state){};
+void WaterLevelTask::updateState(){
+    unsigned long interrupt_time = millis();
+    if (interrupt_time - last_interrupt_time > DEBOUNCE_DELAY) {
+        if(currState == ALARM){
+            currState = MANUAL;
+        } else if (currState == MANUAL){
+            currState == ALARM;
+        }
+    }
+    last_interrupt_time = interrupt_time;
+};

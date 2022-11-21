@@ -30,7 +30,7 @@ class WaterLevelTask : public Task {
         WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, int buttonPin, Task* slt, Task* bt);
         void init(int normalPeriod, int preAlarmPeriod, int alarmPeriod);
         void tick();
-        void setState(State state);
+        void updateState();
 };
 
 
