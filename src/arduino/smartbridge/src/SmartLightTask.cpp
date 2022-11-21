@@ -16,24 +16,24 @@ void SmartLightTask::init(int period){
     led = new Led(ledPin);
     ls = new LighSensorImpl(lsPin);
     ms = new MotionSensorImpl(msPin);
-    state = OFF;
+    currState = OFF;
 }
 
 void SmartLightTask::tick(){
   int start;
   ms->updateStatus();
-  switch (state){
+  switch (currState){
   case OFF:
     if(ms->getStatus() && ls->getIntensity() < TH){
       led->switchOn();
       start = millis();
-      state = ON;
+      currState = ON;
     }
     break;
   case ON:
     if((ms->getStatus() && millis() - start >= TIME_OFF) || ls->getIntensity() > TH){
       led->switchOff();
-      state = OFF;
+      currState = OFF;
     }
     break;
   }
