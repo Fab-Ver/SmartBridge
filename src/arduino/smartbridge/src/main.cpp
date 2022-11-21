@@ -3,9 +3,16 @@
 #include "WaterLevelTask.h"
 #include "Scheduler.h"
 #include "config.h"
+#include <EnableInterrupt.h>
 #include <Arduino.h>
 
+
 Scheduler sched;
+Task* wlt;
+
+void buttonHandler(){
+  wlt->updateState();
+}
 
 void setup() {
   sched.init(0);
@@ -16,8 +23,10 @@ void setup() {
   Task* slt = new SmartLightTask(LA_PIN,PHORES_PIN,PIR_PIN);
   slt->init(0);
 
-  Task* wlt = new WaterLevelTask(TRIG_PIN,ECHO_PIN,SERVO_PIN,POT_PIN,LB_PIN,LC_PIN,0,slt,bt);
+  wlt = new WaterLevelTask(TRIG_PIN,ECHO_PIN,SERVO_PIN,POT_PIN,LB_PIN,LC_PIN,0,slt,bt);
   wlt->init(0);
+
+  enableInterrupt(BUTTON_PIN,buttonHandler,CHANGE);
 
   sched.addTask(bt);
   sched.addTask(slt);
