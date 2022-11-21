@@ -1,4 +1,5 @@
 #include "SmartLightTask.h"
+#include "config.h"
 #include <Arduino.h>
 
 #define TH 100
@@ -44,7 +45,7 @@ void SmartLightTask::tick(){
   }
 }
 
-void SmartLightTask::setState(SLState state){
+void SmartLightTask::setState(State state){
     noInterrupts();
     this->currState = state;
     interrupts();

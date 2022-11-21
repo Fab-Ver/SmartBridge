@@ -1,5 +1,6 @@
 #include "BlinkTask.h"
 #include <Arduino.h>
+#include "config.h"
 
 BlinkTask::BlinkTask(int pin){
     this->pin = pin;
@@ -21,7 +22,7 @@ void BlinkTask::tick(){
       led->switchOff();
       currState = LIGHT_OFF;
       break;
-    case BLINK_OFF:
+    case FSM_OFF:
         led->switchOff();
         Task::setActive(false);
         currState = LIGHT_OFF;
@@ -29,7 +30,7 @@ void BlinkTask::tick(){
   }
 }
 
-void BlinkTask::setState(BTState state){
+void BlinkTask::setState(State state){
     noInterrupts();
     this->currState = state;
     interrupts();
