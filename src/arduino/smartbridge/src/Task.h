@@ -1,6 +1,8 @@
 #ifndef __TASK__
 #define __TASK__
 
+#include "config.h"
+
 class Task {
 private:
   int period;
@@ -36,6 +38,8 @@ public:
   void setPeriod(int period){
     this->period = period;
   }
+
+  virtual void setState(State state) = 0;
   
 };
 
