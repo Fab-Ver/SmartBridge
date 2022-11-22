@@ -1,4 +1,4 @@
-package smartbridge;
+package com.smartbridge.com.smartbridge.maven.eclipse;
 
 import java.util.concurrent.*;
 import jssc.*;

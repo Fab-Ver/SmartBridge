@@ -1,4 +1,4 @@
-package smartbridge;
+package com.smartbridge.com.smartbridge.maven.eclipse;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

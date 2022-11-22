@@ -1,4 +1,4 @@
-package smartbridge;
+package com.smartbridge.com.smartbridge.maven.eclipse;
 
 /**
  * Simple interface for an async msg communication channel
