@@ -28,7 +28,7 @@ void SmartLightTask::tick(){
   case LIGHT_OFF:
     if(detected && lightIntensity < TH){
       led->switchOn();
-      MsgService.sendMsg("LED ON");
+      MsgService.sendMsg("LED_ON");
       start = millis();
       currState = LIGHT_ON;
     }
@@ -36,13 +36,13 @@ void SmartLightTask::tick(){
   case LIGHT_ON:
     if((detected && millis() - start >= TIME_OFF) || lightIntensity > TH){
       led->switchOff();
-      MsgService.sendMsg("LED OFF");
+      MsgService.sendMsg("LED_OFF");
       currState = LIGHT_OFF;
     }
     break;
   case FSM_OFF:
     led->switchOff();
-    MsgService.sendMsg("SYSTEM AND LED OFF");
+    MsgService.sendMsg("SYSTEM_AND_LED_OFF");
     Task::setActive(false);
     currState = LIGHT_OFF;
   }
