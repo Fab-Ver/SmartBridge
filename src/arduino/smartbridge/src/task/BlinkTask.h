@@ -2,7 +2,7 @@
 #define __BLINK_TASK__
 
 #include "Task.h"
-#include "Led.h"
+#include "component/Led.h"
 
 class BlinkTask: public Task {
     private:

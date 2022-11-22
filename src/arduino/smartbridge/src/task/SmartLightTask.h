@@ -2,9 +2,9 @@
 #define __SMARTLIGHT_TASK__
 
 #include "Task.h"
-#include "Led.h"
-#include "LightSensorImpl.h"
-#include "MotionSensorImpl.h"
+#include "component/Led.h"
+#include "component/LightSensorImpl.h"
+#include "component/MotionSensorImpl.h"
 
 class SmartLightTask : public Task{
     private:

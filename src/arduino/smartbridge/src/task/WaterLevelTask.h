@@ -4,11 +4,11 @@
 #include "Task.h"
 #include "BlinkTask.h"
 #include "SmartLightTask.h"
-#include "Led.h"
-#include "WaterLevelSensor.h"
-#include "Valve.h"
-#include "PotentiometerImpl.h"
-#include "LcdImpl.h"
+#include "component/Led.h"
+#include "component/WaterLevelSensor.h"
+#include "component/Valve.h"
+#include "component/PotentiometerImpl.h"
+#include "component/LcdImpl.h"
 
 typedef enum WLState {NORMAL, PRE_ALARM, ALARM, MANUAL} WLState;
 
