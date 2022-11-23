@@ -15,7 +15,7 @@ void SmartLightTask::init(int period){
     Task::init(period);
     Task::setActive(true);
     led = new Led(ledPin);
-    ls = new LighSensorImpl(lsPin);
+    ls = new LightSensorImpl(lsPin);
     ms = new MotionSensorImpl(msPin);
     currState = LIGHT_OFF;
 }
@@ -24,6 +24,7 @@ void SmartLightTask::tick(){
   int start;
   bool detected = ms->updateStatus();
   int lightIntensity = ls->getIntensity();
+
   switch (currState){
   case LIGHT_OFF:
     if(detected && lightIntensity < TH){
@@ -34,7 +35,7 @@ void SmartLightTask::tick(){
     }
     break;
   case LIGHT_ON:
-    if((detected && millis() - start >= TIME_OFF) || lightIntensity > TH){
+    if((detected && (millis() - start >= TIME_OFF)) || lightIntensity > TH){
       led->switchOff();
       MsgService.sendMsg("LED_OFF");
       currState = LIGHT_OFF;
@@ -45,11 +46,10 @@ void SmartLightTask::tick(){
     MsgService.sendMsg("SYSTEM_AND_LED_OFF");
     Task::setActive(false);
     currState = LIGHT_OFF;
+    break;
   }
 }
 
 void SmartLightTask::updateState(){
-    noInterrupts();
-    this->currState = FSM_OFF;
-    interrupts();
+    currState = FSM_OFF;
 }
