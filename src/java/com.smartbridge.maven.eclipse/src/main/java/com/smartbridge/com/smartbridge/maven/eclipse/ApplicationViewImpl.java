@@ -104,7 +104,7 @@ public class ApplicationViewImpl implements ApplicationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(bridgeStatus.getText() == "ALARM" || bridgeStatus.getText() == "MANUAL_ALARM") {
+				if(bridgeStatus.getText().equals("ALARM") || bridgeStatus.getText().equals("MANUAL_ALARM")) {
 					if(manual.isSelected()) {
 						observer.sendMsg("MANUAL_ON");
 					} else {
@@ -120,7 +120,8 @@ public class ApplicationViewImpl implements ApplicationView {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if(bridgeStatus.getText() == "ALARM" || bridgeStatus.getText() == "MANUAL_ALARM") {
+				if(bridgeStatus.getText().equals("ALARM") || bridgeStatus.getText().equals("MANUAL_ALARM")) {
+					System.out.println(anglePicker.getValue());
 					observer.sendAngle(anglePicker.getValue());
 				}
 			}
@@ -143,13 +144,12 @@ public class ApplicationViewImpl implements ApplicationView {
 
 	@Override
 	public void writeFSMStatus(String msg, float wl) {
-		manual.setEnabled(msg == "ALARM" || msg == "MANUAL_ALARM");
-		anglePicker.setEnabled(msg == "ALARM" || msg == "MANUAL_ALARM");
+		manual.setEnabled(msg.equals("ALARM") || msg.equals("MANUAL_ALARM"));
+		anglePicker.setEnabled(msg.equals("ALARM") || msg.equals("MANUAL_ALARM"));
 		bridgeStatus.setText(msg);
 		waterLevel.setText(Float.toString(wl));
 		
-		final Millisecond now = new Millisecond();
-        this.series.add(now, wl);
+        this.series.add(new Millisecond().previous(), wl);
 	}
 
 	@Override
@@ -185,7 +185,7 @@ public class ApplicationViewImpl implements ApplicationView {
         xaxis.setAutoRange(true);
 
         //Domain axis would show data of 60 seconds for a time
-        xaxis.setFixedAutoRange(60000.0);  // 60 seconds
+        xaxis.setFixedAutoRange(120000.0);  // 60 seconds
         xaxis.setVerticalTickLabels(true);
 
         ValueAxis yaxis = plot.getRangeAxis();
