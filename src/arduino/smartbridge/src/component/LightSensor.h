@@ -1,7 +1,7 @@
 #ifndef __LIGHTSENSOR__
 #define __LIGHTSENSOR__
 
-class LighSensor {
+class LightSensor {
     public:
         virtual int getIntensity() = 0;
 };
