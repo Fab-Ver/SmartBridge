@@ -3,7 +3,7 @@
 #include "util.h"
 #include <Arduino.h>
 
-#define WL1 15
+#define WL1 20
 #define WL2 10
 #define WL_MAX 1
 #define DEBOUNCE_DELAY 500
@@ -51,11 +51,11 @@ void WaterLevelTask::tick(){
             msgAngle = msg->getContent().toInt();
             msg_millis = millis();
         } else {
-            if(msg->getContent() == "MANUAL_ON"){
+            if(msg->getContent().equals("MANUAL_ON")){
                 noInterrupts();
                 currState = MANUAL;
                 interrupts();
-            } else if (msg->getContent() == "MANUAL_OFF"){
+            } else if (msg->getContent().equals("MANUAL_OFF")){
                 noInterrupts();
                 currState = ALARM;
                 interrupts();
@@ -88,21 +88,20 @@ void WaterLevelTask::tick(){
             }
         }break;
         case ALARM:{
-            int angle = map(currWL,WL_MAX,WL2,0,180);
-            Serial.println(angle);
+            int angle = map(currWL,WL_MAX,WL2,180,0);
             if(switchAndCheckState(currWL)){
                 greenLed->switchOff();
                 redLed->switchOn();
                 slTask->updateState();
                 lcdMonitor->on();
-                //valve->on();
+                valve->on();
                 valve->setPosition(angle);
                 lcdMonitor->writeAlarm("ALARM",currWL,angle);
                 MsgService.sendMsg("ALARM "+ (String) currWL);
             } else {
                 slTask->setActive(true);
                 redLed->switchOff();
-                //valve->off();
+                valve->off();
             }
         } break;
         case MANUAL: {
@@ -115,9 +114,9 @@ void WaterLevelTask::tick(){
             redLed->switchOn();
             slTask->updateState();
             lcdMonitor->on();
-            //valve->on();
-            valve->setPosition(potAngle/*pot_millis >= msg_millis ? potAngle : msgAngle*/);
-            lcdMonitor->writeAlarm("ALARM - MANUAL ON",currWL,potAngle/*pot_millis >= msg_millis ? potAngle : msgAngle*/);
+            valve->on();
+            valve->setPosition(pot_millis >= msg_millis ? potAngle : msgAngle);
+            lcdMonitor->writeAlarm("ALARM - MANUAL ON",currWL,pot_millis >= msg_millis ? potAngle : msgAngle);
             MsgService.sendMsg("MANUAL_ALARM "+ (String) currWL);
         }break;
     }
@@ -147,6 +146,7 @@ void WaterLevelTask::updateState(){
     if (interrupt_time - last_interrupt_time > DEBOUNCE_DELAY) {
         if(currState == ALARM){
             currState = MANUAL;
+            slTask->updateState();
         } else if (currState == MANUAL){
             currState = ALARM;
         }
