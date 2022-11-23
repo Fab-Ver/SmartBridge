@@ -3,6 +3,7 @@
 
 #include "Task.h"
 #include "component/Led.h"
+#include "config.h"
 
 class BlinkTask: public Task {
     private:
