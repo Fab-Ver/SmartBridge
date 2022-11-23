@@ -2,8 +2,9 @@
 #include <Arduino.h>
 #include "msg/MsgService.h"
 
-#define TH 100
 #define TIME_OFF 5000
+
+int lastON = 0;
 
 SmartLightTask::SmartLightTask(int ledPin, int lsPin, int msPin){
     this->ledPin = ledPin;
@@ -18,38 +19,52 @@ void SmartLightTask::init(int period){
     ls = new LightSensorImpl(lsPin);
     ms = new MotionSensorImpl(msPin);
     currState = LIGHT_OFF;
+    MsgService.sendMsg("LED_OFF");
 }
 
 void SmartLightTask::tick(){
-  int start;
   bool detected = ms->updateStatus();
-  int lightIntensity = ls->getIntensity();
+  bool dark = ls->isDark();
 
   switch (currState){
-  case LIGHT_OFF:
-    if(detected && lightIntensity < TH){
-      led->switchOn();
-      MsgService.sendMsg("LED_ON");
-      start = millis();
-      currState = LIGHT_ON;
-    }
-    break;
-  case LIGHT_ON:
-    if((detected && (millis() - start >= TIME_OFF)) || lightIntensity > TH){
+    case LIGHT_OFF:
+      if(detected && dark){
+        led->switchOn();
+        MsgService.sendMsg("LED_ON");
+        currState = LIGHT_ON;
+      }
+      break;
+    case LIGHT_ON:
+      lastON = millis();
+      if(!dark){
+        led->switchOff();
+        currState = LIGHT_OFF;
+        MsgService.sendMsg("LED_OFF");
+      } else if (dark && !detected){
+        currState = WAITING;
+      }
+      break;
+    case WAITING:
+      if(dark && detected){
+        currState = LIGHT_ON;
+        MsgService.sendMsg("LED_ON");
+      } else {
+        if((millis() - lastON >= TIME_OFF) || !dark){
+          currState = LIGHT_OFF;
+          led->switchOff();
+          MsgService.sendMsg("LED_OFF");
+        }
+      }
+      break;
+    case SYS_OFF:
       led->switchOff();
-      MsgService.sendMsg("LED_OFF");
+      MsgService.sendMsg("SYS_OFF");
+      Task::setActive(false);
       currState = LIGHT_OFF;
-    }
-    break;
-  case FSM_OFF:
-    led->switchOff();
-    MsgService.sendMsg("SYSTEM_AND_LED_OFF");
-    Task::setActive(false);
-    currState = LIGHT_OFF;
-    break;
+      break;
   }
 }
 
 void SmartLightTask::updateState(){
-    currState = FSM_OFF;
+    currState = SYS_OFF;
 }
