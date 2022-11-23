@@ -7,7 +7,6 @@
 #include <EnableInterrupt.h>
 #include <Arduino.h>
 
-
 Scheduler sched;
 WaterLevelTask* wlt;
 
@@ -18,7 +17,7 @@ void buttonHandler(){
 void setup() {
   MsgService.init();
   
-  sched.init(0);
+  sched.init(100);
 
   Task* bt = new BlinkTask(LC_PIN);
   bt->init(BLINK_PERIOD);
