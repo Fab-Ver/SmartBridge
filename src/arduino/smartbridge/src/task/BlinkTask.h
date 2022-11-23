@@ -5,11 +5,13 @@
 #include "component/Led.h"
 #include "config.h"
 
+typedef enum StateB {ON, OFF, BLINK_OFF} StateB;
+
 class BlinkTask: public Task {
     private:
         int pin;
         Light* led;
-        State currState;
+        StateB currState;
     public:
         BlinkTask(int pin);  
         void init(int period);  
