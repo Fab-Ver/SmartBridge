@@ -9,27 +9,27 @@ void BlinkTask::init(int period){
     Task::init(period);
     Task::setActive(false);
     led = new Led(pin);
-    currState = LIGHT_OFF;
+    currState = OFF;
 }
 
 void BlinkTask::tick(){
     switch (currState){
-    case LIGHT_OFF:
+    case OFF:
       led->switchOn();
-      currState = LIGHT_ON; 
+      currState = ON; 
       break;
-    case LIGHT_ON:
+    case ON:
       led->switchOff();
-      currState = LIGHT_OFF;
+      currState = OFF;
       break;
-    case FSM_OFF:
+    case BLINK_OFF:
         led->switchOff();
         Task::setActive(false);
-        currState = LIGHT_OFF;
+        currState = OFF;
         break;
   }
 }
 
 void BlinkTask::updateState(){
-    currState = FSM_OFF;
+    currState = BLINK_OFF;
 }
