@@ -12,7 +12,7 @@ class LcdImpl : public Lcd {
         LcdImpl();
         void on();
         void off();
-        void writePreAlarm(String msg, int waterLevel);
-        void writeAlarm(String msg, int waterLevel, int angle);
+        void writePreAlarm(String msg, float waterLevel);
+        void writeAlarm(String msg, float waterLevel, int angle);
 };
 #endif
