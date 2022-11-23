@@ -7,13 +7,15 @@
 #include "component/LightSensorImpl.h"
 #include "component/MotionSensorImpl.h"
 
+typedef enum StateSM {LIGHT_ON, LIGHT_OFF, WAITING, SYS_OFF} StateSM;
+
 class SmartLightTask : public Task{
     private:
         int ledPin, msPin, lsPin;
         Light* led;
         LightSensor* ls;
         MotionSensor* ms;
-        State currState;
+        StateSM currState;
     public:
         SmartLightTask(int ledPin, int lsPin, int msPin);
         void init(int period);
