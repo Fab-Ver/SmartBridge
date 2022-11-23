@@ -15,18 +15,18 @@ void LcdImpl::off(){
     lcd.noDisplay();
 }
 
-void LcdImpl::writePreAlarm(String msg, int waterLevel){
+void LcdImpl::writePreAlarm(String msg, float waterLevel){
     lcd.clear();
     lcd.print(msg);
-    lcd.setCursor(1,0);
-    lcd.print("Water Lev:" + (String) waterLevel);
+    lcd.setCursor(0,1);
+    lcd.print("Water Lev: " + (String) waterLevel + " m");
 }
 
-void LcdImpl::writeAlarm(String msg, int waterLevel, int angle){
+void LcdImpl::writeAlarm(String msg, float waterLevel, int angle){
     lcd.clear();
     lcd.print(msg);
-    lcd.setCursor(1,0);
-    lcd.print("Water Lev:" + (String) waterLevel);
-    lcd.setCursor(2,0);
-    lcd.print("Valve's angle:" + (String) angle);
+    lcd.setCursor(0,1);
+    lcd.print("Water Lev: " + (String) waterLevel + " m");
+    lcd.setCursor(0,2);
+    lcd.print("Valve's angle: " + (String) angle);
 };
