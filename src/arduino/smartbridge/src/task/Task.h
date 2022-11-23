@@ -1,45 +1,43 @@
 #ifndef __TASK__
 #define __TASK__
 
-#include "config.h"
-
 class Task {
-private:
-  int period;
-  int timeElapsed;
-  bool active;
+  private:
+    int period;
+    int timeElapsed;
+    bool active;
   
-public:
-  virtual void init(int period){
-    this->period = period;  
-    timeElapsed = 0;
-  }
-
-  virtual void tick() = 0;
-
-  bool updateAndCheckTime(int basePeriod){
-    timeElapsed += basePeriod;
-    if (timeElapsed >= period){
+  public:
+    virtual void init(int period){
+      this->period = period;  
       timeElapsed = 0;
-      return true;
-    } else {
-      return false; 
     }
-  }
 
-  bool isActive(){
-    return active;
-  }
+    virtual void tick() = 0;
 
-  void setActive(bool active){
-    this->active = active;
-  }
+    bool updateAndCheckTime(int basePeriod){
+      timeElapsed += basePeriod;
+      if (timeElapsed >= period){
+        timeElapsed = 0;
+        return true;
+      } else {
+        return false; 
+      }
+    }
 
-  void setPeriod(int period){
-    this->period = period;
-  }
+    bool isActive(){
+      return active;
+    }
 
-  virtual void updateState() = 0;
+    void setActive(bool active){
+      this->active = active;
+    }
+
+    void setPeriod(int period){
+      this->period = period;
+    }
+
+    virtual void updateState() = 0;
   
 };
 
