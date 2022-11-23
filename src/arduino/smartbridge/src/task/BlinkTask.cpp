@@ -8,6 +8,7 @@ BlinkTask::BlinkTask(int pin){
 void BlinkTask::init(int period){
     Task::init(period);
     Task::setActive(false);
+    led = new Led(pin);
     currState = LIGHT_OFF;
 }
 
@@ -30,7 +31,5 @@ void BlinkTask::tick(){
 }
 
 void BlinkTask::updateState(){
-    noInterrupts();
-    this->currState = FSM_OFF;
-    interrupts();
+    currState = FSM_OFF;
 }
