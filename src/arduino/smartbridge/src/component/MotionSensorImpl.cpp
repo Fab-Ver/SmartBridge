@@ -1,7 +1,7 @@
 #include "MotionSensorImpl.h"
 #include <Arduino.h>
 
-#define CALIBRATION_TIME_SEC 20
+#define CALIBRATION_TIME_SEC 5
 
 MotionSensorImpl::MotionSensorImpl(int pin){
     this->pin = pin;
