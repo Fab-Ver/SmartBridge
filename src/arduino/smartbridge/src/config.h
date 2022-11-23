@@ -18,6 +18,4 @@
 #define WATER_LEVEL_PREALARM_PERIOD 500
 #define WATER_LEVEL_ALARM_PERIOD 250
 
-typedef enum State {LIGHT_ON, LIGHT_OFF, FSM_OFF} State;
-
 #endif
