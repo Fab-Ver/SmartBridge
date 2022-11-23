@@ -6,7 +6,7 @@
 class LightSensorImpl : public LightSensor {
     public:
         LightSensorImpl(int pin);
-        int getIntensity();
+        bool isDark();
     private:
         int pin;
 };
