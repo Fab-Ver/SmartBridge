@@ -27,7 +27,7 @@ class WaterLevelTask : public Task {
         int getPeriod();
         bool switchAndCheckState(float currWL);
     public:
-        WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin,Task* slt, Task* bt);
+        WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, Task* slt, Task* bt);
         void init(int normalPeriod, int preAlarmPeriod, int alarmPeriod);
         void tick();
         void updateState();

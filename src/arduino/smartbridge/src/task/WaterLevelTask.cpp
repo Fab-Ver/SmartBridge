@@ -3,12 +3,13 @@
 #include "util.h"
 #include <Arduino.h>
 
-#define WL1 3
-#define WL2 5
-#define WL_MAX 7
-#define DEBOUNCE_DELAY 100
+#define WL1 15
+#define WL2 10
+#define WL_MAX 1
+#define DEBOUNCE_DELAY 500
+#define METERS_COV 100
 
-int periods[3];
+int periods[4];
 int msg_millis = 0;
 int pot_millis = 0;
 int last_pot = 0;
@@ -30,6 +31,7 @@ void WaterLevelTask::init(int normalPeriod, int preAlarmPeriod, int alarmPeriod)
     periods[NORMAL] = normalPeriod;
     periods[PRE_ALARM] = preAlarmPeriod;
     periods[ALARM] = alarmPeriod;
+    periods[MANUAL] = alarmPeriod;
     currState = NORMAL;
     Task::init(getPeriod());
     Task::setActive(true);
@@ -58,63 +60,66 @@ void WaterLevelTask::tick(){
                 currState = ALARM;
                 interrupts();
             }
+            Task::setPeriod(getPeriod());
         }
         delete msg;
     }
-    float currWL = wlSensor->getDistance();
+    float currWL = wlSensor->getDistance()*METERS_COV;
+
     switch(currState){
-    case NORMAL:
-        if(switchAndCheckState(currWL)){
-            lcdMonitor->off();
-            greenLed->switchOn();
-            redLed->switchOff();
-            MsgService.sendMsg("NORMAL"+ (String) currWL);
-        } else {
-            greenLed->switchOff();
-        }
-        break;
-    case PRE_ALARM:
-        if(switchAndCheckState(currWL)){
-            blinktask->setActive(true);
-            lcdMonitor->on();
-            lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
-            MsgService.sendMsg("PRE-ALARM"+ (String) currWL);
-        } else {
-            blinktask->updateState();
-        }
-        break;
-    case ALARM:
-        int angle = map(currWL,WL2,WL_MAX,0,180);
-        if(switchAndCheckState(currWL)){
+        case NORMAL:{
+            if(switchAndCheckState(currWL)){
+                lcdMonitor->off();
+                greenLed->switchOn();
+                redLed->switchOff();
+                MsgService.sendMsg("NORMAL "+ (String) currWL);
+            } else {
+                greenLed->switchOff();
+            }
+        }break;
+        case PRE_ALARM:{
+            if(switchAndCheckState(currWL)){
+                blinktask->setActive(true);
+                lcdMonitor->on();
+                lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
+                MsgService.sendMsg("PRE-ALARM "+ (String) currWL);
+            } else {
+                blinktask->updateState();
+            }
+        }break;
+        case ALARM:{
+            int angle = map(currWL,WL_MAX,WL2,0,180);
+            Serial.println(angle);
+            if(switchAndCheckState(currWL)){
+                greenLed->switchOff();
+                redLed->switchOn();
+                slTask->updateState();
+                lcdMonitor->on();
+                //valve->on();
+                valve->setPosition(angle);
+                lcdMonitor->writeAlarm("ALARM",currWL,angle);
+                MsgService.sendMsg("ALARM "+ (String) currWL);
+            } else {
+                slTask->setActive(true);
+                redLed->switchOff();
+                //valve->off();
+            }
+        } break;
+        case MANUAL: {
+            int potAngle = pot->getAngle();
+            if(last_pot != potAngle){
+                pot_millis = millis();
+                last_pot = potAngle;
+            }
             greenLed->switchOff();
             redLed->switchOn();
             slTask->updateState();
             lcdMonitor->on();
-            valve->on();
-            valve->setPosition(angle);
-            lcdMonitor->writeAlarm("ALARM",currWL,angle);
-            MsgService.sendMsg("ALARM"+ (String) currWL);
-        } else {
-            slTask->setActive(true);
-            redLed->switchOff();
-            valve->off();
-        }
-        break;
-    case MANUAL:
-        int potAngle = pot->getAngle();
-        if(last_pot != potAngle){
-            pot_millis = millis();
-            last_pot = potAngle;
-        }
-        greenLed->switchOff();
-        redLed->switchOn();
-        slTask->updateState();
-        lcdMonitor->on();
-        valve->on();
-        valve->setPosition(pot_millis >= msg_millis ? potAngle : msgAngle);
-        lcdMonitor->writeAlarm("ALARM",currWL,pot_millis >= msg_millis ? potAngle : msgAngle);
-        MsgService.sendMsg("MANUAL_ALARM"+ (String) currWL);
-        break;
+            //valve->on();
+            valve->setPosition(potAngle/*pot_millis >= msg_millis ? potAngle : msgAngle*/);
+            lcdMonitor->writeAlarm("ALARM - MANUAL ON",currWL,potAngle/*pot_millis >= msg_millis ? potAngle : msgAngle*/);
+            MsgService.sendMsg("MANUAL_ALARM "+ (String) currWL);
+        }break;
     }
 }
 
@@ -125,11 +130,11 @@ int WaterLevelTask::getPeriod(){
 bool WaterLevelTask::switchAndCheckState(float currWL){
     noInterrupts();
     WLState prevState = currState;
-    if(currWL < WL1){
+    if(currWL > WL1){
         currState = NORMAL;
-    } else if (currWL >= WL1 && currWL < WL2){
+    } else if (currWL <= WL1 && currWL > WL2){
         currState = PRE_ALARM;
-    } else if (currWL >= WL2 && currWL <= WL_MAX){
+    } else if (currWL <= WL2 && currWL >= WL_MAX){
         currState = ALARM;
     }
     Task::setPeriod(getPeriod());
@@ -143,8 +148,9 @@ void WaterLevelTask::updateState(){
         if(currState == ALARM){
             currState = MANUAL;
         } else if (currState == MANUAL){
-            currState == ALARM;
+            currState = ALARM;
         }
+        Task::setPeriod(getPeriod());
     }
     last_interrupt_time = interrupt_time;
 }
