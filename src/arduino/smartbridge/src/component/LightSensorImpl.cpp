@@ -1,11 +1,13 @@
 #include "LightSensorImpl.h"
 #include <Arduino.h>
 
+#define TH 320
+
 LightSensorImpl::LightSensorImpl(int pin){
     this->pin = pin;
 }
 
-int LightSensorImpl::getIntensity(){
+bool LightSensorImpl::isDark(){
     int value = analogRead(pin);
-    return map(value,0,1000,0,255);
+    return value < TH;
 };
