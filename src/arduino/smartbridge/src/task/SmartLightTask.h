@@ -2,6 +2,7 @@
 #define __SMARTLIGHT_TASK__
 
 #include "Task.h"
+#include "config.h"
 #include "component/Led.h"
 #include "component/LightSensorImpl.h"
 #include "component/MotionSensorImpl.h"
@@ -10,7 +11,7 @@ class SmartLightTask : public Task{
     private:
         int ledPin, msPin, lsPin;
         Light* led;
-        LighSensor* ls;
+        LightSensor* ls;
         MotionSensor* ms;
         State currState;
     public:
