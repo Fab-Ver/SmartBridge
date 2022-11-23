@@ -3,9 +3,9 @@
 
 #include "LightSensor.h"
 
-class LighSensorImpl : public LighSensor {
+class LightSensorImpl : public LightSensor {
     public:
-        LighSensorImpl(int pin);
+        LightSensorImpl(int pin);
         int getIntensity();
     private:
         int pin;
