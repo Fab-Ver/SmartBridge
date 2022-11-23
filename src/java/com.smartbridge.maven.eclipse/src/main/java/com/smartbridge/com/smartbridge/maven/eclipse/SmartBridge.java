@@ -14,13 +14,13 @@ public class SmartBridge implements ApplicationViewObserver{
 		} else if (args.length == 1) {
 			comPortName = args[0];
 		} else {
-			comPortName = "/";
+			comPortName = "COM3";
 		}
 		
 		this.channel = new SerialCommChannel(comPortName,9600);
 		/* attesa necessaria per fare in modo che Arduino completi il reboot */
 		System.out.println("Waiting Arduino for rebooting...");		
-		Thread.sleep(4000);
+		Thread.sleep(5000);
 		System.out.println("Ready.");
 		
 		this.view = new ApplicationViewImpl();
@@ -41,7 +41,7 @@ public class SmartBridge implements ApplicationViewObserver{
 				if(messages.length == 1) {
 					view.writeLedStatus(messages[0]);
 				} else if (messages.length == 2 ) {
-					view.writeFSMStatus(messages[0],Float.valueOf(messages[1]));
+					view.writeFSMStatus(messages[0], Float.valueOf(messages[1]));
 				}
 			}
 		}
@@ -55,6 +55,7 @@ public class SmartBridge implements ApplicationViewObserver{
 	@Override
 	public void sendAngle(int angle) {
 		this.channel.sendMsg(Integer.toString(angle));
+		System.out.println(Integer.toString(angle));
 	}
 
 }
