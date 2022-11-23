@@ -3,7 +3,7 @@
 
 class LightSensor {
     public:
-        virtual int getIntensity() = 0;
+        virtual bool isDark() = 0;
 };
 
 #endif
