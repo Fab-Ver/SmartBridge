@@ -7,6 +7,7 @@
 
 class LcdImpl : public Lcd {
     private:
+        /*Constructor values depend on specific lcd monitor*/
         LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 20, 4);
     public:
         LcdImpl();
