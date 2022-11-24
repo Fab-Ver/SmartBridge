@@ -14,19 +14,19 @@ void BlinkTask::init(int period){
 
 void BlinkTask::tick(){
     switch (currState){
-    case OFF:
-      led->switchOn();
-      currState = ON; 
+      case OFF:
+        led->switchOn();
+        currState = ON; 
       break;
-    case ON:
-      led->switchOff();
-      currState = OFF;
+      case ON:
+        led->switchOff();
+        currState = OFF;
       break;
-    case BLINK_OFF:
+      case BLINK_OFF:
         led->switchOff();
         Task::setActive(false);
         currState = OFF;
-        break;
+      break;
   }
 }
 

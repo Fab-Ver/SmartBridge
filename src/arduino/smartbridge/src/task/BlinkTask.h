@@ -19,5 +19,4 @@ class BlinkTask: public Task {
         void updateState();
 };
 
-
 #endif
