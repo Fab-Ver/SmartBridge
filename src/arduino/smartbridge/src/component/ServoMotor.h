@@ -3,9 +3,20 @@
 
 class ServoMotor {
     public:
+        /*
+            Attaches a servo motor to pin.
+        */
         virtual void on() = 0;
+
+        /*
+            Detach a servo motor to pin.
+        */
         virtual void off() = 0;
-        virtual void setPosition(int angle);
+
+        /*
+            Set the servo position to the specified angle.
+        */
+        virtual void setPosition(int angle) = 0;
 };
 
 #endif

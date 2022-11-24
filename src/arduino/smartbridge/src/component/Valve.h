@@ -15,4 +15,5 @@ class Valve : public ServoMotor{
         void off();
         void setPosition(int angle);
 };
+
 #endif

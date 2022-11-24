@@ -3,18 +3,21 @@
 
 Valve::Valve(int pin){
     this->pin = pin;
-    motor.attach(pin);
 }
 
 void Valve::on(){
-    motor.attach(pin);
+    if(!motor.attached()){
+        motor.attach(pin);
+    }
 }
 
 void Valve::off(){
-    motor.detach();
+    if(motor.attached()){
+        motor.detach();
+    }
 }
 
 void Valve::setPosition(int angle){
     float coef = ((float)(MAX_PULSE_WIDTH - MIN_PULSE_WIDTH))/180.0;
-    motor.write(MIN_PULSE_WIDTH + angle*coef);
+    motor.write(MIN_PULSE_WIDTH + angle * coef);
 };
