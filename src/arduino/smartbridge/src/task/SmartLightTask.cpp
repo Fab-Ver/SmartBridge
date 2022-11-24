@@ -24,7 +24,7 @@ void SmartLightTask::init(int period){
 }
 
 void SmartLightTask::tick(){
-  bool detected = ms->updateStatus();
+  bool detected = ms->isDetected();
   bool dark = ls->isDark();
 
   switch (currState){

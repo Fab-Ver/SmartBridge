@@ -4,12 +4,12 @@
 #include "MotionSensor.h"
 
 class MotionSensorImpl : public MotionSensor{
-    public:
-        MotionSensorImpl(int pin);
-        bool updateStatus();
     private:
         bool detectedStatus;
         int pin;
+    public:
+        MotionSensorImpl(int pin);
+        bool isDetected();
 };
 
 #endif

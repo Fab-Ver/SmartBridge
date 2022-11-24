@@ -3,7 +3,10 @@
 
 class MotionSensor{
     public:
-        virtual bool updateStatus() = 0;
+        /*
+            Return true if an object is detected, false otherwise. 
+        */
+        virtual bool isDetected() = 0;
 };
 
 #endif

@@ -6,17 +6,17 @@
 MotionSensorImpl::MotionSensorImpl(int pin){
     this->pin = pin;
     pinMode(pin,INPUT);
-    detectedStatus = false;
-    Serial.print("Calibrating motion sensor... ");
+    this->detectedStatus = false;
+    Serial.print("Calibrating motion sensor");
     for(int i = 0; i < CALIBRATION_TIME_SEC; i++){
         Serial.print(".");
         delay(1000);
     }
-    Serial.println(" Motion sensor ready.");
+    Serial.println("done.");
     delay(50);
 }
 
-bool MotionSensorImpl::updateStatus(){
+bool MotionSensorImpl::isDetected(){
     int current = digitalRead(pin);
     if(current != detectedStatus){
         detectedStatus = current;
