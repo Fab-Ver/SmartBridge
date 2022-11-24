@@ -10,9 +10,8 @@
 #define METERS_COV 100
 
 int periods[4];
-int msg_millis = 0;
-int pot_millis = 0;
-int last_pot = 0;
+bool remoteControl = false;
+int lastRemoteAngle;
 unsigned long last_interrupt_time = 0;
 
 
@@ -44,26 +43,31 @@ void WaterLevelTask::init(int normalPeriod, int preAlarmPeriod, int alarmPeriod)
 }
 
 void WaterLevelTask::tick(){
-    int msgAngle;
+    int manualAngle;
     if(MsgService.isMsgAvailable()){
         Msg* msg = MsgService.receiveMsg();
-        if(isNumeric(msg->getContent())){
-            msgAngle = msg->getContent().toInt();
-            msg_millis = millis();
-        } else {
-            if(msg->getContent().equals("MANUAL_ON")){
-                noInterrupts();
-                currState = MANUAL;
-                interrupts();
-            } else if (msg->getContent().equals("MANUAL_OFF")){
-                noInterrupts();
-                currState = ALARM;
-                interrupts();
-            }
-            Task::setPeriod(getPeriod());
-        }
+        String content = msg->getContent();
         delete msg;
+        if(isNumber(content)){
+            manualAngle = content.toInt();
+            lastRemoteAngle = manualAngle;
+        } else {
+            if(content == "MANUAL_ON"){
+                currState = MANUAL;
+                remoteControl = true;
+            } else if (content == "MANUAL_OFF"){
+                currState = ALARM;
+                remoteControl = false;
+            }
+        }
+    } else {
+        if(!remoteControl){
+            manualAngle = pot->getAngle();
+        } else {
+            manualAngle = lastRemoteAngle;
+        }  
     }
+        
     float currWL = wlSensor->getDistance()*METERS_COV;
 
     switch(currState){
@@ -92,32 +96,29 @@ void WaterLevelTask::tick(){
             if(switchAndCheckState(currWL)){
                 greenLed->switchOff();
                 redLed->switchOn();
-                slTask->updateState();
+                if(slTask->isActive()){
+                    slTask->updateState();
+                }
                 lcdMonitor->on();
-                valve->on();
+                //valve->on();
                 valve->setPosition(angle);
                 lcdMonitor->writeAlarm("ALARM",currWL,angle);
                 MsgService.sendMsg("ALARM "+ (String) currWL);
             } else {
-                slTask->setActive(true);
                 redLed->switchOff();
-                valve->off();
+                //valve->off();
+                slTask->setActive(true);
             }
         } break;
         case MANUAL: {
-            int potAngle = pot->getAngle();
-            if(last_pot != potAngle){
-                pot_millis = millis();
-                last_pot = potAngle;
-            }
             greenLed->switchOff();
             redLed->switchOn();
             slTask->updateState();
             lcdMonitor->on();
-            valve->on();
-            valve->setPosition(pot_millis >= msg_millis ? potAngle : msgAngle);
-            lcdMonitor->writeAlarm("ALARM - MANUAL ON",currWL,pot_millis >= msg_millis ? potAngle : msgAngle);
-            MsgService.sendMsg("MANUAL_ALARM "+ (String) currWL);
+            //valve->on();
+            valve->setPosition(manualAngle);
+            lcdMonitor->writeAlarm("ALARM - MANUAL ON",currWL,manualAngle);
+            MsgService.sendMsg("MANUAL "+ (String) currWL);
         }break;
     }
 }
