@@ -4,11 +4,11 @@
 #include "Potentiometer.h"
 
 class PotentiometerImpl : public Potentiometer{   
+    private:
+        int pin;
     public:
         PotentiometerImpl(int pin);
         int getAngle();
-    private:
-        int pin;
 };
 
 #endif
