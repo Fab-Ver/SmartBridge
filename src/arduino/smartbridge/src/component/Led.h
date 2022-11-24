@@ -11,4 +11,5 @@ class Led : public Light {
     private:
         int pin;
 };
+
 #endif
