@@ -24,7 +24,7 @@ class WaterLevelTask : public Task {
         Task* slTask;
         Task* blinktask;
         WLState currState;
-        int getPeriod();
+        int getCurrentPeriod();
         bool switchAndCheckState(float currWL);
     public:
         WaterLevelTask(int trigPin, int echoPin, int valvePin, int potPin, int greenPin, int redPin, Task* slt, Task* bt);
