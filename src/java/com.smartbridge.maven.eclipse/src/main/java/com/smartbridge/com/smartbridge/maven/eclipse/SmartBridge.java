@@ -20,7 +20,7 @@ public class SmartBridge implements ApplicationViewObserver{
 		this.channel = new SerialCommChannel(comPortName,9600);
 		/* attesa necessaria per fare in modo che Arduino completi il reboot */
 		System.out.println("Waiting Arduino for rebooting...");		
-		Thread.sleep(5000);
+		Thread.sleep(20000);
 		System.out.println("Ready.");
 		
 		this.view = new ApplicationViewImpl();
@@ -48,14 +48,8 @@ public class SmartBridge implements ApplicationViewObserver{
 	}
 
 	@Override
-	public void sendMsg(String msg) {
+	public void sendMessage(String msg) {
 		this.channel.sendMsg(msg);
-	}
-
-	@Override
-	public void sendAngle(int angle) {
-		this.channel.sendMsg(Integer.toString(angle));
-		System.out.println(Integer.toString(angle));
 	}
 
 }
