@@ -5,6 +5,7 @@
 #define TIME_OFF 5000
 
 int lastON = 0;
+int cnt = 0;
 
 SmartLightTask::SmartLightTask(int ledPin, int lsPin, int msPin){
     this->ledPin = ledPin;
@@ -27,14 +28,14 @@ void SmartLightTask::tick(){
   bool dark = ls->isDark();
 
   switch (currState){
-    case LIGHT_OFF:
+    case LIGHT_OFF: {
       if(detected && dark){
         led->switchOn();
         MsgService.sendMsg("LED_ON");
         currState = LIGHT_ON;
       }
-      break;
-    case LIGHT_ON:
+    }break;
+    case LIGHT_ON:{
       lastON = millis();
       if(!dark){
         led->switchOff();
@@ -43,8 +44,8 @@ void SmartLightTask::tick(){
       } else if (dark && !detected){
         currState = WAITING;
       }
-      break;
-    case WAITING:
+    }break;
+    case WAITING:{
       if(dark && detected){
         currState = LIGHT_ON;
         MsgService.sendMsg("LED_ON");
@@ -55,16 +56,18 @@ void SmartLightTask::tick(){
           MsgService.sendMsg("LED_OFF");
         }
       }
-      break;
-    case SYS_OFF:
+    }break;
+    case SYS_OFF:{
       led->switchOff();
       MsgService.sendMsg("SYS_OFF");
-      Task::setActive(false);
       currState = LIGHT_OFF;
-      break;
+      Task::setActive(false);
+    }break;
   }
 }
 
 void SmartLightTask::updateState(){
     currState = SYS_OFF;
+    cnt++;
+    Serial.println(cnt);
 }
