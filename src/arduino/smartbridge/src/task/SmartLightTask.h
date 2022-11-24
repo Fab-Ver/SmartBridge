@@ -22,4 +22,5 @@ class SmartLightTask : public Task{
         void tick();
         void updateState();
 };
+
 #endif

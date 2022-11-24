@@ -5,7 +5,6 @@
 #define TIME_OFF 5000
 
 int lastON = 0;
-int cnt = 0;
 
 SmartLightTask::SmartLightTask(int ledPin, int lsPin, int msPin){
     this->ledPin = ledPin;
@@ -68,6 +67,4 @@ void SmartLightTask::tick(){
 
 void SmartLightTask::updateState(){
     currState = SYS_OFF;
-    cnt++;
-    Serial.println(cnt);
 }
