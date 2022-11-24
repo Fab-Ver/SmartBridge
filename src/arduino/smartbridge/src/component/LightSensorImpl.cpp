@@ -1,7 +1,7 @@
 #include "LightSensorImpl.h"
 #include <Arduino.h>
 
-#define TH 320
+#define THRESHOLD 300
 
 LightSensorImpl::LightSensorImpl(int pin){
     this->pin = pin;
@@ -9,5 +9,5 @@ LightSensorImpl::LightSensorImpl(int pin){
 
 bool LightSensorImpl::isDark(){
     int value = analogRead(pin);
-    return value < TH;
+    return value < THRESHOLD;
 };

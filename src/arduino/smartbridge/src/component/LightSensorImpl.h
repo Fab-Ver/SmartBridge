@@ -4,11 +4,11 @@
 #include "LightSensor.h"
 
 class LightSensorImpl : public LightSensor {
+    private:
+        int pin;
     public:
         LightSensorImpl(int pin);
         bool isDark();
-    private:
-        int pin;
 };
 
 #endif
