@@ -12,7 +12,7 @@ public interface ApplicationView {
 	 * @param msg subsystem situation.
 	 * @param wl water level of the river.
 	 */
-	void writeFSMStatus(String msg, float wl);
+	void writeFSMStatus(String msg, double wl);
 	
 	/**
 	 * Report to the ApplicationView the status of smart light subsystem.

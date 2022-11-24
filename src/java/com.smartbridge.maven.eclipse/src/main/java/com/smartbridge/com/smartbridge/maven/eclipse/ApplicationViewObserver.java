@@ -9,14 +9,9 @@ public interface ApplicationViewObserver {
 	void run() throws Exception;
 	
 	/**
-	 * Send the status message on the serial port.
+	 * Send the message on the serial port.
 	 * @param msg 
 	 */
-	void sendMsg(String msg);
+	void sendMessage(String msg);
 	
-	/**
-	 * Send the valve angle on the serial port. 
-	 * @param angle
-	 */
-	void sendAngle(int angle);
 }
