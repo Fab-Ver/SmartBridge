@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 
-bool isNumeric(String str){
+bool isNumber(String str){
     if(str.length() == 0){
         return false;
     }
