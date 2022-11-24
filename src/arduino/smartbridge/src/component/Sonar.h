@@ -3,6 +3,9 @@
 
 class Sonar {
     public:
+        /*
+            Return the current distance from water. 
+        */
         virtual float getDistance() = 0;
 };
 

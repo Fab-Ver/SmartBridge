@@ -10,4 +10,5 @@ class WaterLevelSensor : public Sonar {
         WaterLevelSensor(int trigPin, int echoPin);
         float getDistance();
 };
+
 #endif
