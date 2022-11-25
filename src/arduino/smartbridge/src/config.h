@@ -1,6 +1,9 @@
 #ifndef __CONFIG__
 #define __CONFIG__
 
+/*
+    Devices pins
+*/
 #define LA_PIN 12
 #define LB_PIN 13
 #define LC_PIN 8
@@ -12,6 +15,9 @@
 #define SERVO_PIN 4
 #define BUTTON_PIN 7
 
+/*
+    Tasks periods
+*/
 #define BLINK_PERIOD 2000
 #define SMART_LIGHT_PERIOD 200
 #define WATER_LEVEL_NORMAL_PERIOD 1000

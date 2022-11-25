@@ -3,6 +3,9 @@
 
 #include "Arduino.h"
 
+/*
+    Check if a stirng is numeric. 
+*/
 bool isNumber(String str){
     if(str.length() == 0){
         return false;
