@@ -9,10 +9,12 @@ LcdImpl::LcdImpl(){
 
 void LcdImpl::on(){
     lcd.display();
+    lcd.backlight();
 }
 
 void LcdImpl::off(){
     lcd.noDisplay();
+    lcd.noBacklight();
 }
 
 void LcdImpl::writePreAlarm(String msg, float waterLevel){
