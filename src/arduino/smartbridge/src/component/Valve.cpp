@@ -1,6 +1,8 @@
 #include "Valve.h"
 #include "Arduino.h"
 
+#define CLOSE 0
+
 Valve::Valve(int pin){
     this->pin = pin;
 }
@@ -13,6 +15,7 @@ void Valve::on(){
 
 void Valve::off(){
     if(motor.attached()){
+        this->setPosition(CLOSE);
         motor.detach();
     }
 }
