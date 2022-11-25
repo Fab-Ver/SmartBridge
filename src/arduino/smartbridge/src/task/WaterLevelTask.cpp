@@ -3,9 +3,9 @@
 #include "util.h"
 #include <Arduino.h>
 
-#define WL1 0.25
-#define WL2 0.15
-#define WL_MAX 0.02
+#define WL1 25
+#define WL2 15
+#define WL_MAX 2
 #define DEBOUNCE_DELAY 500
 #define METERS_COV 100
 
@@ -94,7 +94,7 @@ void WaterLevelTask::tick(){
             }
         }break;
         case ALARM:{
-            int angle = map(currWL,WL_MAX,WL2,180,0);
+            int angle = map(currWL*METERS_COV,WL_MAX,WL2,180,0);
             if(switchAndCheckState(currWL)){
                 greenLed->switchOff();
                 redLed->switchOn();
@@ -134,6 +134,7 @@ int WaterLevelTask::getCurrentPeriod(){
 bool WaterLevelTask::switchAndCheckState(float currWL){
     noInterrupts();
     WLState prevState = currState;
+    currWL = currWL * METERS_COV;
     if(currWL > WL1){
         currState = NORMAL;
     } else if (currWL <= WL1 && currWL > WL2){
