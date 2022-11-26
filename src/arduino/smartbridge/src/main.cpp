@@ -1,9 +1,9 @@
-#include "task/BlinkTask.h"
-#include "task/SmartLightTask.h"
-#include "task/WaterLevelTask.h"
-#include "scheduler/Scheduler.h"
+#include "BlinkTask.h"
+#include "SmartLightTask.h"
+#include "WaterLevelTask.h"
+#include "Scheduler.h"
 #include "config.h"
-#include "msg/MsgService.h"
+#include "MsgService.h"
 #include <EnableInterrupt.h>
 #include <Arduino.h>
 

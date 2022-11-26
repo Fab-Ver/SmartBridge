@@ -2,7 +2,7 @@
 #define __BLINK_TASK__
 
 #include "Task.h"
-#include "component/Led.h"
+#include "Led.h"
 #include "config.h"
 
 typedef enum StateB {ON, OFF, BLINK_OFF} StateB;

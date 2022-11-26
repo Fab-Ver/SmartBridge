@@ -3,9 +3,9 @@
 
 #include "Task.h"
 #include "config.h"
-#include "component/Led.h"
-#include "component/LightSensorImpl.h"
-#include "component/MotionSensorImpl.h"
+#include "Led.h"
+#include "LightSensorImpl.h"
+#include "MotionSensorImpl.h"
 
 typedef enum StateSM {LIGHT_ON, LIGHT_OFF, WAITING, SYS_OFF} StateSM;
 

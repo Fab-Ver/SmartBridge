@@ -1,7 +1,7 @@
 #ifndef __SCHEDULER__
 #define __SCHEDULER__
 
-#include "task/Task.h"
+#include "Task.h"
 
 #define MAX_TASKS 4
 
