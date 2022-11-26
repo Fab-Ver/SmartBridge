@@ -26,7 +26,6 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 		serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
 
 		serialPort.addEventListener(this);
-		
 	}
 
 	@Override
@@ -106,8 +105,14 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 	}
 
 	@Override
-	public boolean isPortOpened() {
+	public boolean isPortConnected() {
 		
-		return serialPort.isOpened();
+		try {
+			serialPort.writeString("");
+		} catch (Exception e) {
+			return false;
+		}
+		
+		return true;
 	}
 }

@@ -132,8 +132,6 @@ public class SmartBridgeViewImpl implements SmartBridgeView {
 			}
 		});
 		
-		frame.
-		
 		this.series = new TimeSeries("WaterLevel");
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(this.series);
 		final JFreeChart chart = createChart(dataset);

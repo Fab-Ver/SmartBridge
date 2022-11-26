@@ -34,6 +34,6 @@ public interface CommChannel {
 	 * Check if the port is opened.
 	 * @return
 	 */
-	boolean isPortOpened();
+	boolean isPortConnected();
 
 }

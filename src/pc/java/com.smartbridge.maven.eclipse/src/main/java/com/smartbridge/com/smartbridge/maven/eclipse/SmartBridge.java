@@ -38,7 +38,7 @@ public class SmartBridge implements SmartBridgeObserver{
 	}
 
 	public void run() throws Exception{
-		while (channel.isPortOpened()){
+		while (channel.isPortConnected()){
 			if(channel.isMsgAvailable()) {
 				String msg = channel.receiveMsg();
 				String[] messages = msg.split(" ");
