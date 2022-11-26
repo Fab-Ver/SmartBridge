@@ -3,8 +3,8 @@
 #include "util.h"
 #include <Arduino.h>
 
-#define WL1 25
-#define WL2 15
+#define WL1 70
+#define WL2 40
 #define WL_MAX 2
 #define DEBOUNCE_DELAY 500
 #define METERS_COV 100
@@ -102,12 +102,11 @@ void WaterLevelTask::tick(){
                     slTask->updateState();
                 }
                 lcdMonitor->on();
-                valve->on();
                 valve->setPosition(angle);
                 lcdMonitor->writeAlarm("ALARM",currWL,angle);
                 MsgService.sendMsg("ALARM "+ (String) currWL);
             } else {
-                valve->off();
+                valve->close();
                 redLed->switchOff();
                 slTask->setActive(true);
             }
@@ -119,7 +118,6 @@ void WaterLevelTask::tick(){
                 slTask->updateState();
             }
             lcdMonitor->on();
-            valve->on();
             valve->setPosition(manualAngle);
             lcdMonitor->writeAlarm("ALARM - MANUAL ON",currWL,manualAngle);
             MsgService.sendMsg("MANUAL "+ (String) currWL);
@@ -150,12 +148,14 @@ bool WaterLevelTask::switchAndCheckState(float currWL){
 void WaterLevelTask::updateState(){
     unsigned long interrupt_time = millis();
     if (interrupt_time - last_interrupt_time > DEBOUNCE_DELAY) {
-        if(currState == ALARM){
-            currState = MANUAL;
-        } else if (currState == MANUAL){
-            currState = ALARM;
+        if(!remoteControl){
+            if(currState == ALARM){
+                currState = MANUAL;
+            } else if (currState == MANUAL){
+                currState = ALARM;
+            }
+            Task::setPeriod(getCurrentPeriod());
         }
-        Task::setPeriod(getCurrentPeriod());
     }
     last_interrupt_time = interrupt_time;
 }
