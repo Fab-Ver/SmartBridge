@@ -29,7 +29,6 @@ float WaterLevelSensor::getDistance(){
     }
     float value = (time_micros/(2.0*1000000.0))*SOUND_SPEED;
     prevValue = value;
-    delay(50);
     if(value <= MIN_RANGE){
         return MIN_RANGE;
     } else if (value >= MAX_RANGE){
