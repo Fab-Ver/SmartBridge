@@ -4,8 +4,8 @@
 /*
     Devices pins
 */
-#define LA_PIN 12
-#define LB_PIN 13
+#define LA_PIN 13
+#define LB_PIN 12
 #define LC_PIN 8
 #define POT_PIN A0
 #define PIR_PIN 2
