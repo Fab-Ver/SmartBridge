@@ -7,6 +7,8 @@ import javax.swing.event.ChangeListener;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Millisecond;
@@ -17,13 +19,15 @@ import org.jfree.data.xy.XYDataset;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowListener;
 
-public class ApplicationViewImpl implements ApplicationView {
+public class SmartBridgeViewImpl implements SmartBridgeView {
 
 	private static final Dimension WINDOW_DIMENSION = new Dimension(1024, 768);
+	private static final double MIN_VALUE = 0.0;
+	private static final double MAX_VALUE = 4.0;
 
 	private final JFrame frame = new JFrame("Smart Bridge");
-
 	private final JToggleButton manual = new JToggleButton("MANUAL");
 	private final JTextField bridgeStatus = new JTextField();
 	private final JTextField waterLevel = new JTextField();
@@ -31,11 +35,11 @@ public class ApplicationViewImpl implements ApplicationView {
 	private final JSlider anglePicker = new JSlider();
 	private final JPanel graphPanel = new JPanel();
 
-	private ApplicationViewObserver observer;
+	private boolean remoteControl = false;
+	private SmartBridgeObserver observer;
+	private final TimeSeries series;
 
-	private TimeSeries series;
-
-	public ApplicationViewImpl() {
+	public SmartBridgeViewImpl() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setSize(WINDOW_DIMENSION);
@@ -87,6 +91,7 @@ public class ApplicationViewImpl implements ApplicationView {
 		anglePicker.setMaximum(180);
 		anglePicker.setEnabled(false);
 		anglePicker.setBounds(836, 149, 142, 343);
+		anglePicker.setValue(0);
 		mainPanel.add(anglePicker);
 
 		JLabel angleLabel = new JLabel("VALVE ANGLE:");
@@ -98,34 +103,37 @@ public class ApplicationViewImpl implements ApplicationView {
 		graphPanel.setBounds(10, 50, 800, 500);
 
 		manual.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (bridgeStatus.getText().equals("ALARM") || bridgeStatus.getText().equals("MANUAL")) {
+				if (bridgeStatus.getText().equals("ALARM") || remoteControl) {
 					if (manual.isSelected()) {
 						observer.sendMessage("MANUAL_ON");
 						anglePicker.setEnabled(true);
+						remoteControl = true;
 					} else {
 						observer.sendMessage("MANUAL_OFF");
 						anglePicker.setEnabled(false);
+						manual.setEnabled(false);
+						remoteControl = false;
 					}
 				}
 			}
 		});
 
 		anglePicker.addChangeListener(new ChangeListener() {
-
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider) e.getSource();
 				if (!source.getValueIsAdjusting()) {
-					if (bridgeStatus.getText().equals("ALARM") || bridgeStatus.getText().equals("MANUAL")) {
+					if (remoteControl) {
 						observer.sendMessage(Integer.toString(source.getValue()));
 					}
 				}
 			}
 		});
-
+		
+		
+		
 		this.series = new TimeSeries("WaterLevel");
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(this.series);
 		final JFreeChart chart = createChart(dataset);
@@ -142,13 +150,13 @@ public class ApplicationViewImpl implements ApplicationView {
 	}
 
 	@Override
-	public void writeFSMStatus(String msg, double wl) {
-		manual.setEnabled(msg.equals("ALARM") || msg.equals("MANUAL"));
-		manual.setSelected(msg.equals("MANUAL"));
+	public void writeSysStatus(String msg, String wl) {
+		if (!remoteControl) {
+			manual.setEnabled(msg.equals("ALARM"));
+		}
 		bridgeStatus.setText(msg);
-		waterLevel.setText(Double.toString(wl));
-
-		this.series.addOrUpdate(new Millisecond().previous(), wl);
+		waterLevel.setText(wl);
+		this.addData(wl);
 	}
 
 	@Override
@@ -157,8 +165,13 @@ public class ApplicationViewImpl implements ApplicationView {
 	}
 
 	@Override
-	public void setObserver(ApplicationViewObserver observer) {
+	public void setObserver(SmartBridgeObserver observer) {
 		this.observer = observer;
+	}
+
+	private void addData(String data) {
+		double waterLevel = MAX_VALUE - Double.valueOf(data);
+		this.series.addOrUpdate(new Millisecond(), waterLevel);
 	}
 
 	private JFreeChart createChart(final XYDataset dataset) {
@@ -177,11 +190,13 @@ public class ApplicationViewImpl implements ApplicationView {
 		xaxis.setAutoRange(true);
 
 		// Domain axis would show data of 3 minutes for a time
-		xaxis.setFixedAutoRange(180000.0);
+		xaxis.setFixedAutoRange(120000.0);
 		xaxis.setVerticalTickLabels(true);
+		xaxis.setAutoRangeMinimumSize(0.01);
 
 		ValueAxis yaxis = plot.getRangeAxis();
-		yaxis.setRange(0.0, 400.0);
+		yaxis.setRange(0.00, 4.50);
+		yaxis.setAutoRangeMinimumSize(0.01);
 
 		return result;
 	}

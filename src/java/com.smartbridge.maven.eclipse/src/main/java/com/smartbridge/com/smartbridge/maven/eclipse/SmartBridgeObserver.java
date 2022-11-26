@@ -1,6 +1,6 @@
 package com.smartbridge.com.smartbridge.maven.eclipse;
 
-public interface ApplicationViewObserver {
+public interface SmartBridgeObserver {
 	
 	/**
 	 * Run the smart bridge system.
