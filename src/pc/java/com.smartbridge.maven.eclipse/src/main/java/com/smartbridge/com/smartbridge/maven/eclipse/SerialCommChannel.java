@@ -26,6 +26,7 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 		serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
 
 		serialPort.addEventListener(this);
+		
 	}
 
 	@Override
