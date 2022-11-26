@@ -1,8 +1,8 @@
 # SmartBridge
 
 Second assignement for the Embedded Systems and IoT course at UNIBO; we want to realise an embedded system called Smart Bridge.
-# Schema
-![Project Schema](./doc/SmartBridgeSchema.png)
+# Circuit Design
+![Project Scheme](./doc/SmartBridgeSchema.png)
 # Description 
 
 The prototype  is meant to simulate a system mounted on a bridge, providing smart functionalities:
