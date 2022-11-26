@@ -7,12 +7,10 @@
 
 class Valve : public ServoMotor{
     private:
-        int pin;
         ServoTimer2 motor;
     public:
         Valve(int pin);
-        void on();
-        void off();
+        void close();
         void setPosition(int angle);
 };
 

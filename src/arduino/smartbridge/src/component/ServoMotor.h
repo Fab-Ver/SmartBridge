@@ -4,14 +4,9 @@
 class ServoMotor {
     public:
         /*
-            Attaches a servo motor to pin.
+            Reset the position of the servo motor.
         */
-        virtual void on() = 0;
-
-        /*
-            Detach a servo motor to pin.
-        */
-        virtual void off() = 0;
+        virtual void close() = 0;
 
         /*
             Set the servo position to the specified angle.

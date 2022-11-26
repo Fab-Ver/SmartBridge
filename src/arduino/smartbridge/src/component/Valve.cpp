@@ -4,20 +4,11 @@
 #define CLOSE 0
 
 Valve::Valve(int pin){
-    this->pin = pin;
+    motor.attach(pin);
 }
 
-void Valve::on(){
-    if(!motor.attached()){
-        motor.attach(pin);
-    }
-}
-
-void Valve::off(){
-    if(motor.attached()){
+void Valve::close(){
         this->setPosition(CLOSE);
-        motor.detach();
-    }
 }
 
 void Valve::setPosition(int angle){
