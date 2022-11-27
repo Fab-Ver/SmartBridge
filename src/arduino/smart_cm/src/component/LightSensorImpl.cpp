@@ -8,6 +8,5 @@ LightSensorImpl::LightSensorImpl(int pin){
 }
 
 bool LightSensorImpl::isDark(){
-    int value = analogRead(pin);
-    return value < THRESHOLD;
+    return analogRead(pin) < THRESHOLD;
 };
