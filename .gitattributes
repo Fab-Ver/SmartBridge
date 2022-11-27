@@ -1,0 +1,2 @@
+doc/SmartBridgeVideo:MOV filter=lfs diff=lfs merge=lfs -text
+doc/SmartBridgeVideo.MOV filter=lfs diff=lfs merge=lfs -text
