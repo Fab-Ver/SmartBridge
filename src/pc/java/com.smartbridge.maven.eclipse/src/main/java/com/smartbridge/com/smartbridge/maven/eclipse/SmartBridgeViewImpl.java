@@ -7,8 +7,6 @@ import javax.swing.event.ChangeListener;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Millisecond;
@@ -19,12 +17,10 @@ import org.jfree.data.xy.XYDataset;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
 
 public class SmartBridgeViewImpl implements SmartBridgeView {
 
 	private static final Dimension WINDOW_DIMENSION = new Dimension(1024, 768);
-	private static final double MIN_VALUE = 0.0;
 	private static final double MAX_VALUE = 4.0;
 
 	private final JFrame frame = new JFrame("Smart Bridge");

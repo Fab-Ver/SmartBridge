@@ -24,7 +24,7 @@ public class SmartBridge implements SmartBridgeObserver{
 			System.exit(1);
 		}
 		
-		System.out.print("Waiting Arduino for rebooting...");		
+		System.out.print("Waiting Arduino for rebooting");		
 		for(int i = 0; i < CALIBRATION_TIME_SEC; i++){
 	        System.out.print(".");
 	        Thread.sleep(1000);
@@ -57,8 +57,9 @@ public class SmartBridge implements SmartBridgeObserver{
 
 	@Override
 	public void sendMessage(String msg) {
-		if(model.isNumeric(msg) || model.checkMessage(msg))
-		this.channel.sendMsg(msg);
+		if(model.isNumeric(msg) || model.checkMessage(msg)) {
+			this.channel.sendMsg(msg);
+		}
 	}
 	
 	public static void main(String[] args) throws Exception {
