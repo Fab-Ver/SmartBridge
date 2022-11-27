@@ -29,11 +29,5 @@ public interface CommChannel {
 	 * @return
 	 */
 	boolean isMsgAvailable();
-	
-	/**
-	 * Check if the port is opened.
-	 * @return
-	 */
-	boolean isPortConnected();
 
 }

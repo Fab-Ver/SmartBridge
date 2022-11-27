@@ -38,7 +38,7 @@ public class SmartBridge implements SmartBridgeObserver{
 	}
 
 	public void run() throws Exception{
-		while (channel.isPortConnected()){
+		while (true){
 			if(channel.isMsgAvailable()) {
 				String msg = channel.receiveMsg();
 				String[] messages = msg.split(" ");
@@ -53,8 +53,6 @@ public class SmartBridge implements SmartBridgeObserver{
 				}
 			}
 		}
-		System.out.println("Error: the serial port is no more connected, closing the application");
-		System.exit(1);
 	}
 
 	@Override

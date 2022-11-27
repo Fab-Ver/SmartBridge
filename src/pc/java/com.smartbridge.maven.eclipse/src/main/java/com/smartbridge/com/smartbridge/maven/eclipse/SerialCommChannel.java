@@ -104,15 +104,4 @@ public class SerialCommChannel implements CommChannel, SerialPortEventListener {
 		}
 	}
 
-	@Override
-	public boolean isPortConnected() {
-		
-		try {
-			serialPort.writeString("");
-		} catch (Exception e) {
-			return false;
-		}
-		
-		return true;
-	}
 }
