@@ -1,7 +1,6 @@
 #ifndef __WATER_LEVEL_TASK__
 #define __WATER_LEVEL_TASK__
 
-#include "Task.h"
 #include "BlinkTask.h"
 #include "SmartLightTask.h"
 #include "Led.h"
@@ -32,6 +31,5 @@ class WaterLevelTask : public Task {
         void tick();
         void updateState();
 };
-
 
 #endif

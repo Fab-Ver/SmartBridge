@@ -1,10 +1,7 @@
-#include "LiquidCrystal_I2C.h"
 #include "LcdImpl.h"
-#include <Arduino.h>
 
 LcdImpl::LcdImpl(){
     lcd.init();
-    lcd.backlight();
 }
 
 void LcdImpl::on(){

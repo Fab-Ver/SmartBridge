@@ -2,7 +2,6 @@
 #define __SMARTLIGHT_TASK__
 
 #include "Task.h"
-#include "config.h"
 #include "Led.h"
 #include "LightSensorImpl.h"
 #include "MotionSensorImpl.h"

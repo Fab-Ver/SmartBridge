@@ -1,5 +1,4 @@
 #include "BlinkTask.h"
-#include <Arduino.h>
 
 BlinkTask::BlinkTask(int pin){
     this->pin = pin;

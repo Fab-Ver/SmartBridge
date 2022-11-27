@@ -1,5 +1,4 @@
 #include "SmartLightTask.h"
-#include <Arduino.h>
 #include "MsgService.h"
 
 #define TIME_OFF 5000

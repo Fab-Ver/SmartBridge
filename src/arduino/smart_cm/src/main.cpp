@@ -5,7 +5,6 @@
 #include "config.h"
 #include "MsgService.h"
 #include <EnableInterrupt.h>
-#include <Arduino.h>
 
 Scheduler sched;
 WaterLevelTask* wlt;

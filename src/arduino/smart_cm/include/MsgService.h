@@ -4,40 +4,32 @@
 #include "Arduino.h"
 
 class Msg {
-  String content;
+  private:
+    String content;
 
-public:
-  Msg(String content){
-    this->content = content;
-  }
+  public:
+    Msg(String content){
+      this->content = content;
+    }
   
-  String getContent() const{
-    return content;
-  }
-};
-
-class Pattern {
-public:
-  virtual boolean match(const Msg& m) = 0;  
+    String getContent() const{
+      return content;
+    }
 };
 
 class MsgServiceClass {
-    
-public: 
+  public: 
   
-  Msg* currentMsg;
-  bool msgAvailable;
+    Msg* currentMsg;
+    bool msgAvailable;
 
-  void init();  
+    void init();  
 
-  bool isMsgAvailable();
-  Msg* receiveMsg();
-
-  bool isMsgAvailable(Pattern& pattern);
-  Msg* receiveMsg(Pattern& pattern);
+    bool isMsgAvailable();
+    Msg* receiveMsg();
   
-  void sendMsg(const Msg& msg);
-  void sendMsg(const String& msg);
+    void sendMsg(const Msg& msg);
+    void sendMsg(const String& msg);
 };
 
 extern MsgServiceClass MsgService;

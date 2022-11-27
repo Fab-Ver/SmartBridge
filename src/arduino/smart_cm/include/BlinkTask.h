@@ -3,11 +3,10 @@
 
 #include "Task.h"
 #include "Led.h"
-#include "config.h"
 
 typedef enum StateB {ON, OFF, BLINK_OFF} StateB;
 
-class BlinkTask: public Task {
+class BlinkTask : public Task {
     private:
         int pin;
         Light* led;

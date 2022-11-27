@@ -1,5 +1,4 @@
 #include "Valve.h"
-#include "Arduino.h"
 
 #define CLOSE 0
 

@@ -6,26 +6,26 @@
 #define MAX_TASKS 4
 
 class Scheduler {
-  
-  int basePeriod;
-  int nTasks;
-  Task* taskList[MAX_TASKS];  
+  private:  
+    int basePeriod;
+    int nTasks;
+    Task* taskList[MAX_TASKS];  
 
-public:
-  /*
-    Initialize scheduler period
-  */
-  void init(int basePeriod);  
+  public:
+    /*
+      Initialize scheduler period
+    */
+    void init(int basePeriod);  
 
-  /*
-    Add task to be scheduled.
-  */
-  virtual bool addTask(Task* task);  
+    /*
+      Add task to be scheduled.
+    */
+    virtual bool addTask(Task* task);  
 
-  /*
-    Execute the task in the taskList. 
-  */
-  virtual void schedule();
+    /*
+      Execute the task in the taskList. 
+    */
+    virtual void schedule();
 };
 
 #endif

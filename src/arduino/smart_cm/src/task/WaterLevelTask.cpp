@@ -1,7 +1,6 @@
 #include "WaterLevelTask.h"
 #include "MsgService.h"
 #include "util.h"
-#include <Arduino.h>
 
 #define WL1 70
 #define WL2 40
