@@ -7,9 +7,9 @@ Led::Led(int pin){
 }
 
 void Led::switchOn(){
-        digitalWrite(pin,HIGH);
+    digitalWrite(pin,HIGH);
 }
 
 void Led::switchOff(){
-        digitalWrite(pin,LOW);
+    digitalWrite(pin,LOW);
 };
