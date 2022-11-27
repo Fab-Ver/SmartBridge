@@ -29,20 +29,20 @@ void SmartLightTask::tick(){
   switch (currState){
     case LIGHT_OFF: {
       if(detected && dark){
-        led->switchOn();
         MsgService.sendMsg("LED_ON");
         currState = LIGHT_ON;
       }
+      led->switchOff();
     }break;
     case LIGHT_ON:{
       lastON = millis();
       if(!dark){
-        led->switchOff();
         currState = LIGHT_OFF;
         MsgService.sendMsg("LED_OFF");
       } else if (dark && !detected){
         currState = WAITING;
       }
+      led->switchOn();
     }break;
     case WAITING:{
       if(dark && detected){
@@ -51,7 +51,6 @@ void SmartLightTask::tick(){
       } else {
         if((millis() - lastON >= TIME_OFF) || !dark){
           currState = LIGHT_OFF;
-          led->switchOff();
           MsgService.sendMsg("LED_OFF");
         }
       }
