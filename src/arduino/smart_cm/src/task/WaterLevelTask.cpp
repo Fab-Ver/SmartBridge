@@ -75,7 +75,6 @@ void WaterLevelTask::tick(){
             if(switchAndCheckState(currWL)){
                 lcdMonitor->off();
                 greenLed->switchOn();
-                redLed->switchOff();
                 MsgService.sendMsg("NORMAL "+ (String) currWL);
             } else {
                 greenLed->switchOff();
@@ -90,13 +89,13 @@ void WaterLevelTask::tick(){
                 lcdMonitor->writePreAlarm("PRE-ALARM",currWL);
                 MsgService.sendMsg("PRE-ALARM "+ (String) currWL);
             } else {
+                redLed->switchOff();
                 blinktask->updateState();
             }
         }break;
         case ALARM:{
             int angle = map(currWL*METERS_COV,WL_MAX,WL2,180,0);
             if(switchAndCheckState(currWL)){
-                greenLed->switchOff();
                 redLed->switchOn();
                 if(slTask->isActive()){
                     slTask->updateState();
@@ -112,7 +111,6 @@ void WaterLevelTask::tick(){
             }
         } break;
         case MANUAL: {
-            greenLed->switchOff();
             redLed->switchOn();
             if(slTask->isActive()){
                 slTask->updateState();
