@@ -41,8 +41,8 @@ The program running on the PC Console should:
 
 [basic version] just report the current state of the bridge, either using a GUI or a text-based output
 - if the smart light are either on or off
-- normal/pre-alarm/alarm situation
+- normal/pre-alarm/alarm situation  
 [complete version] like simplest, plus:
-- a graph reporting the temporal trend of the water level 
+- a graph reporting the temporal trend of the water level   
 [full-fledged version] like complete, plus:
 - in the alarm state, the possibility to take control of the valve (like it happens with the button B and Pot)
